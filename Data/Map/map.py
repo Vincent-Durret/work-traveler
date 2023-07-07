@@ -1,3 +1,5 @@
+
+
 from dataclasses import dataclass
 import pygame
 import pytmx
@@ -76,10 +78,10 @@ class MapManager:
                     self.player.damage(self.grec.attack)
                 else:
                     sprite.speed_walk = 1
-                # if self.player.feet.colliderect(sprite.rect):
-                #     sprite.damage_for_npc(self.player.attack_npc)
-                # if sprite.current_health == 0:
-                #     sprite.status = 'dead'
+                if self.player.feet.colliderect(sprite.rect):
+                    sprite.damage_for_npc(self.player.attack_npc)
+                if sprite.current_health == 0:
+                    sprite.status = 'dead'
 
         for sprite in self.get_group().sprites():
             if sprite.feet.collidelist(self.get_walls()) > -1:
@@ -101,10 +103,11 @@ class MapManager:
     def draw_collision(self):
         # for collision in self.get_ground():
         #     pygame.draw.rect(self.screen, (64, 64, 64, 0), collision)
-        if self.player.sword:
-            pygame.draw.rect(self.screen,  (64, 64, 64, 0), self.player.sword)
+        # if self.player.sword:
+        #     pygame.draw.rect(self.screen,  (64, 64, 64, 0), self.player.sword)
         # if self.player.sprite.head:
         #     pygame.draw.rect(self.screen,  (64, 64, 64, 0), self.player.sprite.head)
+        pass
 
     # Gravite
     def gravity_game(self):
@@ -150,8 +153,7 @@ class MapManager:
             map_layer=map_layer, default_layer=3)
         group.add(self.player)
         for npc in npcs:
-            group.add(npc) 
-        
+            group.add(npc)
 
         # creer un objet map
         self.maps[name] = Map(name, walls, ground, spade,
@@ -186,9 +188,10 @@ class MapManager:
 
     def draw(self):
         self.get_group().draw(self.screen)
-        self.get_group().center(self.player.position)
         self.player.update_health_bar(self.screen)
         self.grec.update_health_bar(self.screen)
+        self.draw_collision()
+        self.get_group().center(self.player.position)
         # self.draw_collision()
         # self.player.fireballs_rect(self.screen)
 
