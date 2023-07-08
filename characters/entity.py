@@ -50,19 +50,18 @@ class Entity(Animate_Sprite):
     def move_left_npc(self):
         self.facing_right = False
         self.position[0] -= self.speed_walk
-        # self.moves()
         self.status = 'run'
         self.animation_speed = 0.25
 
     def run_right(self):
         self.position[0] += self.speed_run
         self.status = 'run'
-        self.animation_speed = 0.55
+        self.animation_speed = 0.25
 
     def run_left(self):
         self.position[0] -= self.speed_run
         self.status = 'run'
-        self.animation_speed = 0.55
+        self.animation_speed = 0.25
 
     def update(self):
         self.rect.topleft = self.position
@@ -158,7 +157,7 @@ class Player(Entity):
 
     def launch_projectile(self, camera):
         # creer une nouvel instance de la classe projectile
-        self.all_projectiles.add(Projectile(self, camera))
+        self.all_projectiles.add(Projectile(self, camera, self.facing_right))
         self.status = 'attack'
         self.animation_speed = 0.15
 

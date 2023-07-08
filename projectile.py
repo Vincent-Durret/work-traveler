@@ -6,7 +6,7 @@ import pygame
 class Projectile(pygame.sprite.Sprite):
 
     # Definir le constructeur de cette class projectile
-    def __init__(self, player, camera):
+    def __init__(self, player, camera, facing):
         super().__init__()
         self.velocity = 3
         self.player = player
@@ -17,6 +17,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = player.position[0] + 120 - self.camera.rect.x
         self.rect.y = player.position[1] + 80 - self.camera.rect.y
+        self.face = facing
         self.origin_image = self.image
         self.angle = 0
 
@@ -34,12 +35,18 @@ class Projectile(pygame.sprite.Sprite):
         self.player.all_projectiles.remove(self)
 
     def move(self):
-        self.rect.x += self.velocity
+        if self.face == True:
+            self.rect.x += self.velocity
+        else:
+            self.rect.x -= self.velocity
+
         self.rotate()
 
         # verifiersi ntre projectile nest plus prset sur lecran
         if self.rect.right > 1280:
-
             # suprimmer le projectile en dehors de lecran
             self.remove()
             print("Projectile suprimer!")
+        if self.face == False and self.rect.left < 0:
+            self.remove()
+            print("Projectile gauche suppr")
