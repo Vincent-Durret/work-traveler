@@ -116,9 +116,6 @@ class Menu:
         while self.running:
             self.setBackground()
             self.gameStart()
-
             self.mainKey()
-
             pygame.display.flip()
-
             clock.tick(settings.FPS)
