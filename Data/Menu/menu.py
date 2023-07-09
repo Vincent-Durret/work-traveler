@@ -4,14 +4,18 @@ from game import Game
 import Data.settings as settings
 import Data.data as data
 import Data.Menu.Data.DataMenu as dataMenu
+from Data.Menu.Settings.Settings import Settings
 
 
 class Menu:
     def __init__(self):
         self.running = True
-        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.settings = Settings()
         self.screen = pygame.display.set_mode(
-            (settings.DISPLAY_X, settings.DISPLAY_Y))
+            (self.settings.res_x, self.settings.res_y), pygame.FULLSCREEN if self.settings.fullscreen else 0)
+        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        # self.screen = pygame.display.set_mode(
+        #     (settings.DISPLAY_X, settings.DISPLAY_Y))
 
         pygame.display.set_caption(data.GAME_NAME)
         self.game = Game(self.screen)
@@ -107,6 +111,12 @@ class Menu:
 
                 if self.restart_button_rect.collidepoint(event.pos):
                     self.game.restart_game()
+
+                # Add a check for if the settings button was clicked
+                if self.setting_button_rect.collidepoint(event.pos):
+                    self.settings.toggle_fullscreen()
+                    self.screen = pygame.display.set_mode(
+                        (self.settings.res_x, self.settings.res_y), pygame.FULLSCREEN if self.settings.fullscreen else 0)
 
                 if self.quit_button_rect.collidepoint(event.pos):
                     self.running = False
