@@ -1,6 +1,7 @@
 
 import random
 import pygame
+import math
 
 from characters.Player.Animatesprite.animatesprite import Animate_Sprite
 from projectile import Projectile
@@ -177,6 +178,9 @@ class NPC(Entity):
         self.name = name
         self.speed_walk = random.randint(1, 3)
         self.current_point = 0
+        self.position = [0, 0]  # Initial position
+        self.pursuing = False
+        self.waypoints = [...]  # List of waypoints
 
     def teleport_spawn(self):
         location = self.points[self.current_point]
@@ -184,7 +188,7 @@ class NPC(Entity):
         self.position[1] = location.y
         self.save_location()
 
-    def move(self):
+    def move(self, player_position):
         current_point = self.current_point
         target_point = self.current_point + 1
 
@@ -194,14 +198,16 @@ class NPC(Entity):
         current_rect = self.points[current_point]
         target_rect = self.points[target_point]
 
-        if current_rect.x > target_rect.x and abs(current_rect.y - target_rect.y) < 3:
-            self.move_left_npc()
-
-        if current_rect.x < target_rect.x and abs(current_rect.y - target_rect.y) < 3:
-            self.move_right_npc()
-
-        if self.rect.colliderect(target_rect):
-            self.current_point = target_point
+        if self.pursuing:
+            direction = [player_position[0] - self.position[0],
+                         player_position[1] - self.position[1]]
+            length = math.sqrt(direction[0]**2 + direction[1]**2)
+            direction = [direction[0]/length, direction[1]/length]
+            self.position = [self.position[0] + direction[0],
+                             self.position[1] + direction[1]]
+        else:
+            if current_rect.x > target_rect.x and abs(current_rect.y - target_rect.y) < 3:
+                self.move_left_npc()
 
     def damage_for_npc(self, amount):
         # infliger les degat
@@ -212,6 +218,12 @@ class NPC(Entity):
             point = tmx_data.get_object_by_name(f"{self.name}_path{num}")
             rect = pygame.Rect(point.x, point.y, point.width, point.height)
             self.points.append(rect)
+
+    def check_for_player(self, player_position):
+        distance = math.sqrt(
+            (player_position[0] - self.position[0])**2 + (player_position[1] - self.position[1])**2)
+        if distance < 100:  # Change this to the desired detection distance
+            self.pursuing = True
 
 
 class Grec(NPC):

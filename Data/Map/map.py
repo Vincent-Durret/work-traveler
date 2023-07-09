@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 import pygame
+import math
 import pytmx
 import pyscroll
 from characters.entity import NPC
@@ -73,6 +74,7 @@ class MapManager:
         for sprite in self.get_group().sprites():
 
             if type(sprite) is NPC:
+
                 if sprite.feet.colliderect(self.player.rect):
                     self.grec.attack_player()
                     self.player.damage(self.grec.attack)
@@ -203,4 +205,5 @@ class MapManager:
         for npc in self.get_map().npcs:
             npc.animate()
             npc.status = 'idle'
-            npc.move()
+            npc.move(self.player.position)
+            npc.check_for_player(self.player.position)

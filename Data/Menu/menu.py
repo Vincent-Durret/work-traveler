@@ -13,7 +13,6 @@ class Menu:
         self.settings = Settings()
         self.screen = pygame.display.set_mode(
             (self.settings.res_x, self.settings.res_y), pygame.FULLSCREEN if self.settings.fullscreen else 0)
-        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         # self.screen = pygame.display.set_mode(
         #     (settings.DISPLAY_X, settings.DISPLAY_Y))
 
