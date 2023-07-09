@@ -12,7 +12,6 @@ class Animate_Sprite(pygame.sprite.Sprite):
         self.animation_speed = 0.25
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect()
-
         self.status = 'idle'
         self.facing_right = True
         self.on_ground = False
@@ -21,13 +20,6 @@ class Animate_Sprite(pygame.sprite.Sprite):
         self.on_right = False
         self.image.set_colorkey([0, 0, 0])
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.4, 12)
-        # self.head = pygame.Rect(0, 0, self.rect.width * 0.5, 12)
-
-
-    # def get_image(self, x, y):
-    #     image = pygame.Surface([138, 138])
-    #     image.blit(self.sprite, (0, 0), (x, y, 138, 138))
-    #     return image
 
     def import_character_assets(self):
         self.character_path

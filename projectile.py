@@ -41,7 +41,6 @@ class Projectile(pygame.sprite.Sprite):
             self.rect.x -= self.velocity
 
         self.rotate()
-
         # verifiersi ntre projectile nest plus prset sur lecran
         if self.rect.right > 1280:
             # suprimmer le projectile en dehors de lecran

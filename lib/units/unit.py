@@ -1,9 +1,4 @@
 import pygame
-from pygame import surface
-from pygame.draw import rect
-
-
-
 
 
 class Unit:
@@ -13,10 +8,6 @@ class Unit:
         self.current_health = current_health
         self.max_health = max_health
 
-
-
-
-
     def damage(self, amount):
         if self.current_health - amount > amount:
             self.current_health -= amount
@@ -25,8 +16,6 @@ class Unit:
         self.current_health = 0
         self.sprite.status = "dead"
         self.sprite.animation_speed = 0.10
-
-
 
     def update_health_bar(self, surface):
         # dessiner la bar de vie
@@ -44,4 +33,3 @@ class Unit:
             (111, 210, 46),
             [80, 70, self.current_health, 10],
         )
-

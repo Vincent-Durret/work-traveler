@@ -1,4 +1,12 @@
 
+
 FPS = 60
 DISPLAY_X = 1260
-DISPLAY_Y = 700
+DISPLAY_Y = 720
+SCREEN_WIDTH = 5000
+SCREEN_HEIGHT = 720
+
+
+# FONTS
+
+FONTS = 'freesansbold.ttf'

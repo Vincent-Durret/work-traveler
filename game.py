@@ -1,4 +1,5 @@
 import pygame
+import Data.settings as settings
 from Data.Map.map import MapManager
 from characters.entity import NPC, Grec, Player
 from Data.Camera.camera import Camera
@@ -10,11 +11,11 @@ class Game:
         self.is_playing = False
         # creation de la fenetre du jeu
         self.screen = screen
-        self.screen_width = 1280  # Ajoutez la largeur de l'écran
-        self.screen_height = 720  # Ajoutez la hauteur de l'écran
-        self.level_width = 5000  # Ajoutez la largeur du niveau
-        self.level_height = 720  # Ajoutez la hauteur du niveau
-        self.font = pygame.font.Font('freesansbold.ttf', 55)
+        self.screen_width = settings.DISPLAY_X  # Ajoutez la largeur de l'écran
+        self.screen_height = settings.DISPLAY_Y  # Ajoutez la hauteur de l'écran
+        self.level_width = settings.SCREEN_WIDTH  # Ajoutez la largeur du niveau
+        self.level_height = settings.SCREEN_HEIGHT  # Ajoutez la hauteur du niveau
+        self.font = pygame.font.Font(settings.FONTS, 55)
         # generer un joueur
         self.npc = NPC("grec", 2)
         self.player = Player(Camera)
@@ -46,6 +47,7 @@ class Game:
 
     def game_over(self):
         # remettre le jeu a neuf, retirer les mponstre remmetre le joueur a 100 point de vie , jeu en attente
+        self.game_over_text()
         self.map_manager.update()
         self.map_manager.teleport_player("player")
         self.player.status = 'idle'
@@ -80,8 +82,10 @@ class Game:
         if self.pressed.get(pygame.K_SPACE):
             self.player.attack()
             self.player.animation_speed = 0.23
-        # if self.pressed.get(pygame.K_LCTRL):
-        #     self.player.launch_projectile()
+
+    def drawProjectile(self):
+        for projectile in self.player.all_projectiles:
+            projectile.move()
 
     def update(self):
         self.map_manager.update()
@@ -91,6 +95,5 @@ class Game:
         self.map_manager.draw()
         self.player.animate()
         self.player_dead()
-        for projectile in self.player.all_projectiles:
-            projectile.move()
+        self.drawProjectile()
         self.player.all_projectiles.draw(self.screen)
